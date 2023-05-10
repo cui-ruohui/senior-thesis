@@ -1,5 +1,6 @@
+# Helia Cui, 2023/05/09
 # a method that opens MuseScore and highlights a particular phrase (given mn) in a specified piece
-# doesn't work in Terminal?
+
 
 import subprocess
 import os
@@ -15,11 +16,11 @@ def highlight(PIECE, mn):
     score = ms3.Score('MS3/' + PIECE + '.mscx')
     phrases = ms3.load_tsv('phrases/' + PIECE + '.tsv')
 
-    i = phrases[phrases['mn'] == mn].index[0]
-    score.mscx.parsed.color_notes(from_mc=int(phrases.at[i, 'mc']),
-                                  from_mc_onset=fractions.Fraction(phrases.at[i, 'mc_onset']),
-                                  to_mc=int(phrases.at[i, 'mc_end']),
-                                  to_mc_onset=fractions.Fraction(phrases.at[i, 'mc_onset_end']),
+    i = phrases[phrases['from_mn'] == mn].index[0]
+    score.mscx.parsed.color_notes(from_mc=int(phrases.at[i, 'from_mc']),
+                                  from_mc_onset=fractions.Fraction(phrases.at[i, 'from_mc_onset']),
+                                  to_mc=int(phrases.at[i, 'to_mc']),
+                                  to_mc_onset=fractions.Fraction(phrases.at[i, 'to_mc_onset']),
                                   color_name='red') # why can't I color non-chord tones in K279-1?
 
     score.store_score('temp/' + PIECE + '.mscx')
@@ -33,5 +34,5 @@ def clear_temp():
         os.remove(FILE)
 
 
-highlight('K283-1', 23)
+# highlight('K283-1', 23)
 # clear_temp()
